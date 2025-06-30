@@ -1,7 +1,8 @@
 import TobiiEyeTracker
 
 
-def getGazeCenter(lastN: int = 100) -> tuple:#期待输入int类型，输出tuple类型
+def getGazeCenter(lastN: int = 100, width: int = 1920, height: int = 1080) -> tuple:#期待输入int类型，输出tuple类型
+
     buffers = TobiiEyeTracker.getBuffer()
     if len(buffers) == 0:
         return None
@@ -11,8 +12,8 @@ def getGazeCenter(lastN: int = 100) -> tuple:#期待输入int类型，输出tupl
     for point in buffers[-availableSize:]:
         x += point[0]
         y += point[1]
-    points=[[int(p[0] * 1920), int(p[1] * 1080)] for p in buffers]
-    return int(x / availableSize * 1920), int(y / availableSize * 1080)
+    points=[[int(p[0] * width), int(p[1] * height)] for p in buffers]
+    return int(x / availableSize * width), int(y / availableSize * height)
 
 
 def getGazeRaw():

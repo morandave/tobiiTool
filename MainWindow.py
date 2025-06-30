@@ -68,32 +68,32 @@ class MainWindow(QWidget):
     def __init__(self, imageDimension: int):
         super().__init__()
         eyeTrackerInit()
-        config = json.load(open('config.json'))
+        self.config = json.load(open('config.json'))
 
         imageDir = QFileDialog.getExistingDirectory(None, "请选择图片文件夹路径", "D:\eye_test")
         self.imageList = glob.glob(imageDir + '/*.jpg') + glob.glob(imageDir + '/*.png')
         sum_images = len(self.imageList)
         #self.imageList=self.imageList.sort()
-        if config["random display order"]:
+        if self.config["random display order"]:
             random.shuffle(self.imageList)
 
         # Only one of the mode would work
-        self.cheaterMode = config["guide mode"]
-        self.instaReviewMode = config["insta review"]
+        self.cheaterMode = self.config["guide mode"]
+        self.instaReviewMode = self.config["insta review"]
         # the cheater mode, insta review mode, etc, is some kind of extension. self.displayingExtension
         # is a flag of whether the displaying content is a extension.
         self.displayingExtension = False
         self.imageListIndex = 0
         self.data = Data(fileName=self.imageList[0])
         #self.imageHeight = config["image height"]
-        self.savePath=config["save path"]
+        self.savePath=self.config["save path"]
         # 获取self.savePath中的图片名称，并将self.imageList中与self.savePath的图片名称相同的去掉
         saved_filenames = set(os.path.basename(p) for p in glob.glob(self.savePath + '/*.jpg') + glob.glob(self.savePath + '/*.png'))
         self.imageList = [p for p in self.imageList if os.path.basename(p) not in saved_filenames]
         print(f"总共{sum_images}张图片，还剩{len(self.imageList)}张图片")
         self.createControlBox()
         self.allowDrawBbox = False
-        self.scale=config["scale"]
+        self.scale=self.config["scale"]
         # This is for the time recording
         self.stopWatch = time.time()
         if imageDimension == 2:
@@ -107,7 +107,7 @@ class MainWindow(QWidget):
         mainLayout.addWidget(self.controlBox)
         self.setLayout(mainLayout)
         self.setWindowTitle("Gaze_Test")
-        font = QFont(config['font'], 12)
+        font = QFont(self.config['font'], 12)
         font.setBold(True)
         self.setFont(font)
         self.refreshTimer = QtCore.QTimer(self)
@@ -357,7 +357,7 @@ class MainWindow(QWidget):
         self.controlBox.setLayout(layout)
 
     def refresh(self):
-        gaze = getGazeCenter()
+        gaze = getGazeCenter(lastN = 100, width = self.config["width"], height = self.config["height"])
 
         #points = [getPointInImage(x, self.getImageGeometry()) for x in points]
         if not gaze:

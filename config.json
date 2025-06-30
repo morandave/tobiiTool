@@ -8,5 +8,7 @@
   "dark mode": true,
   "insta review": true,
   "guide mode": false,
-  "save path": "F:/medical_dataset/New_Gazer/CHAOS/CT/heatmaps"
+  "save path": "D:/GAZER3/covid19-ct-scans/Infection/heatmaps",
+  "width": 3840,
+  "height": 2160
 }
