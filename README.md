@@ -21,7 +21,7 @@ pip install PyQt5 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## 程序运行
 ### 参数设置
-主要有一个参数：config.json中的`save path`,设置为热力图的保存路径。
+主要参数：config.json中的`save path`、`width`、`height`,设置为热力图的保存路径和屏幕分辨率。
 打开Anaconda Prompt，输入：
 ```bash
 conda activate miceye
