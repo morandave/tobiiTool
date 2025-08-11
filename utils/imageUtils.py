@@ -111,7 +111,7 @@ def superimposeHeatmapToImage(heatmap: np.ndarray, image: np.ndarray) -> np.ndar
 def pointToImage(onehot: np.ndarray, image: np.ndarray) -> np.ndarray:
     assert onehot.shape[:2] == image.shape[:2]
     # if len(image.sha)
-    image[np.where(onehot == 1)] = [0, 255, 0]
+    image[np.where(onehot == 1)] = [255, 0, 0]
     return image
 
 def pointToHeatmap(pointList, gaussianSize=99, normalize=True, heatmapShape=(800, 800)):
