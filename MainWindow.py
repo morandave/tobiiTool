@@ -265,7 +265,7 @@ class MainWindow(QWidget):
         save_gaze=os.path.join(self.savePath,'gaze',gaze_name)
         save_onehot=os.path.join(self.savePath,'onehot',onehot_name)
         save_points=os.path.join(self.savePath,'points',points_name)
-        if not os.path.exists(os.path.join(self.savePath,'heatmap')):
+        if not os.path.exists(os.path.join(self.savePath,'heatmaps')):
             os.makedirs(os.path.join(self.savePath,'heatmaps'))
             os.makedirs(os.path.join(self.savePath,'gaze'))
             os.makedirs(os.path.join(self.savePath,'onehot'))
