@@ -85,10 +85,10 @@ class MainWindow(QWidget):
         self.displayingExtension = False
         self.imageListIndex = 0
         self.data = Data(fileName=self.imageList[0])
-        #self.imageHeight = config["image height"]
-        self.savePath=self.config["save path"]
-        # 获取self.savePath中的图片名称，并将self.imageList中与self.savePath的图片名称相同的去掉
-        saved_filenames = set(os.path.basename(p) for p in glob.glob(self.savePath + '/*.jpg') + glob.glob(self.savePath + '/*.png'))
+        self.savePath = os.path.dirname(imageDir)
+        self.heatmapPath = os.path.join(self.savePath, "heatmaps")
+        # 获取self.heatmapPath中的图片名称，并将self.imageList中与self.heatmapPath的图片名称相同的去掉
+        saved_filenames = set(os.path.basename(p) for p in glob.glob(self.heatmapPath + '/*.jpg') + glob.glob(self.heatmapPath + '/*.png'))
         self.imageList = [p for p in self.imageList if os.path.basename(p) not in saved_filenames]
         print(f"总共{sum_images}张图片，还剩{len(self.imageList)}张图片")
         self.createControlBox()
@@ -121,21 +121,6 @@ class MainWindow(QWidget):
     def setLogSystem(self, volunteerName: str, saveTo: str):
         self.logSystem = CsvLog(volunteerName, saveTo)
 
-    def saveData(self):
-        self.logSystem.log(imgName=self.data.fileName,
-                           imgClass=self.data.classLabel,
-                           gazeData=self.data.gazeData,
-                           bboxs=self.data.bboxs,
-                           userGazePoint=self.data.userGazePoint)
-        image_name=self.data.fileName.split('\\')[-1]
-        save_path=os.path.join(self.savePath,image_name.split('.')[0])
-        print(self.savePath)
-        # if not os.path.exists(save_path):
-        #     os.makedirs(save_path)
-        data_array=np.asarray(self.data.gazeData)
-        save_name=os.path.join(self.savePath,image_name.split('.')[0]+".npy")
-        np.save(save_name,data_array)
-
     # This function controls all the keyboard event
     def keyPressEvent(self, event: QKeyEvent) -> None:
         key = event.key()
@@ -143,12 +128,6 @@ class MainWindow(QWidget):
             self.nextImage()
             self.displayingExtension = False
 
-        # elif (Qt.Key_0 <= key <= Qt.Key_9) :
-        #     print("time: ",time.time()-self.stopWatch)
-        #     # self.data.gazeData = [getPointInImage(x, self.getImageGeometry()) for x in getGazeRaw()]
-        #     self.data.classLabel = chr(key)
-        #     #self.saveData()
-        #     self.instaReview()
         elif key == Qt.Key_1:
             self.data.gazeData = []
         elif key == Qt.Key_2:
@@ -167,8 +146,8 @@ class MainWindow(QWidget):
         originalWeight, originalHeight = getImageFileSize(currentImageFile)
         # currentImageWithBBoxes = drawBBoxesOnImage(currentImage, labels, scaleFactor=self.imageHeight / originalHeight)
         gazeHeatmap, gaze, onehot = pointToHeatmap(self.data.gazeData, heatmapShape=currentImage.shape)
-        # self.saveImage(currentImageFile,gazeHeatmap,gaze,onehot,originalWeight, originalHeight)
-        self.just_save_heatmap(currentImageFile,gazeHeatmap,originalWeight, originalHeight)
+        self.saveImage(currentImageFile,gazeHeatmap,gaze,onehot,originalWeight, originalHeight)
+        # self.just_save_heatmap(currentImageFile,gazeHeatmap,originalWeight, originalHeight)
         # imageWithHeatmap = superimposeHeatmapToImage(heatmap=gazeHeatmap, image=currentImage)
         imageWithPoints = pointToImage(onehot=onehot, image=currentImage)
 
@@ -282,12 +261,12 @@ class MainWindow(QWidget):
         gaze_name=image_name.split('.')[0]+'_gaze.npy'
         onehot_name=image_name.split('.')[0]+'_onehot.npy'
         points_name=image_name.split('.')[0]+'_points.npz'
-        save_heatmap=os.path.join(self.savePath,'heatmap',heatmap_name)
+        save_heatmap=os.path.join(self.savePath,'heatmaps',heatmap_name)
         save_gaze=os.path.join(self.savePath,'gaze',gaze_name)
         save_onehot=os.path.join(self.savePath,'onehot',onehot_name)
         save_points=os.path.join(self.savePath,'points',points_name)
         if not os.path.exists(os.path.join(self.savePath,'heatmap')):
-            os.makedirs(os.path.join(self.savePath,'heatmap'))
+            os.makedirs(os.path.join(self.savePath,'heatmaps'))
             os.makedirs(os.path.join(self.savePath,'gaze'))
             os.makedirs(os.path.join(self.savePath,'onehot'))
             os.makedirs(os.path.join(self.savePath,'points'))
