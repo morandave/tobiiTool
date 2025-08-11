@@ -2,7 +2,7 @@ import glob
 import os.path
 import time
 
-
+import re
 import cv2
 from PyQt5 import QtCore
 from PyQt5 import QtGui
@@ -88,7 +88,8 @@ class MainWindow(QWidget):
         self.savePath = os.path.dirname(imageDir)
         self.heatmapPath = os.path.join(self.savePath, "heatmaps")
         # 获取self.heatmapPath中的图片名称，并将self.imageList中与self.heatmapPath的图片名称相同的去掉
-        saved_filenames = set(os.path.basename(p) for p in glob.glob(self.heatmapPath + '/*.jpg') + glob.glob(self.heatmapPath + '/*.png'))
+        saved_filenames = set(re.sub(r"_heatmap(?=\.\w+$)", "", os.path.basename(p)) for p in glob.glob(self.heatmapPath + '/*.jpg') + glob.glob(self.heatmapPath + '/*.png'))
+        # print("test:", saved_filenames)
         self.imageList = [p for p in self.imageList if os.path.basename(p) not in saved_filenames]
         print(f"总共{sum_images}张图片，还剩{len(self.imageList)}张图片")
         self.createControlBox()
@@ -265,7 +266,7 @@ class MainWindow(QWidget):
         save_gaze=os.path.join(self.savePath,'gaze',gaze_name)
         save_onehot=os.path.join(self.savePath,'onehot',onehot_name)
         save_points=os.path.join(self.savePath,'points',points_name)
-        if not os.path.exists(os.path.join(self.savePath,'heatmaps')):
+        if not os.path.exists(os.path.join(self.savePath,'heatmaps  ')):
             os.makedirs(os.path.join(self.savePath,'heatmaps'))
             os.makedirs(os.path.join(self.savePath,'gaze'))
             os.makedirs(os.path.join(self.savePath,'onehot'))
