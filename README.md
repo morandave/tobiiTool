@@ -39,3 +39,9 @@ python miceye.py
 <img width="1782" height="1251" alt="image" src="https://github.com/user-attachments/assets/3e38bac5-da54-43ab-8488-4ceaf36f3444" />
 跳出这个不用管，点ok就行：
 <img width="292" height="176" alt="image" src="https://github.com/user-attachments/assets/e437d50f-5537-45a9-b223-13b5ab44ef82" />
+
+
+一共有3个按键：1，2，3
+1：清空缓存的眼动数据（因为当新图片跳出时目标难免离现有的注视位置有距离，视线要移动到那里需要时间，可以等视线移动到目标时按一下1，重新开始记录）；
+2：注视完毕时按一下2，然后会停止收集这张图片的眼动数据，这时图片上会有红点是预测到的注视点；
+3：跳到下一张图片
