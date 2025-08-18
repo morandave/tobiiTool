@@ -22,10 +22,20 @@ pip install PyQt5 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ## 程序运行
 ### 参数设置
 主要参数：config.json中的`save path`、`width`、`height`,设置为热力图的保存路径和屏幕分辨率。
+数据集拿到手会有images和labels两个文件夹：
+<img width="2674" height="1232" alt="image" src="https://github.com/user-attachments/assets/4f449b3a-c3a1-4212-a215-26dd64710165" />
+在这个文件夹下新建一个heatmaps文件夹：
+<img width="2686" height="1018" alt="image" src="https://github.com/user-attachments/assets/00289856-a942-45e7-b7b0-524330c4717f" />
+然后把save path设置为这个文件夹的路径：
+<img width="1206" height="721" alt="image" src="https://github.com/user-attachments/assets/ef84315f-ae50-48f5-928b-369b4dd6f605" />
+
 打开Anaconda Prompt，输入：
 ```bash
 conda activate miceye
 cd 程序所在目录
 python miceye.py
 ```
-会跳出文件管理器，选择需要观察的图片的文件夹
+会跳出文件管理器，选择需要观察的图片的文件夹，选择labels文件夹：
+<img width="1782" height="1251" alt="image" src="https://github.com/user-attachments/assets/3e38bac5-da54-43ab-8488-4ceaf36f3444" />
+跳出这个不用管，点ok就行：
+<img width="292" height="176" alt="image" src="https://github.com/user-attachments/assets/e437d50f-5537-45a9-b223-13b5ab44ef82" />
